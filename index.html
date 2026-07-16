@@ -369,7 +369,7 @@
       <span class="project-meta">0/5 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-1')">×</button>
     </div>
-    <div id="proj-body-proj-1" style="display:none">
+    <div id="proj-body-proj-1" style="display: none;">
     <table class="task-table" id="table-proj-1">
       <thead>
         <tr>
@@ -570,7 +570,7 @@
       <span class="project-meta">0/0 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-2')">×</button>
     </div>
-    <div id="proj-body-proj-2" style="display:none">
+    <div id="proj-body-proj-2" style="display: none;">
     <table class="task-table" id="table-proj-2">
       <thead>
         <tr>
@@ -594,7 +594,7 @@
       <span class="project-meta">0/0 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-1784123786822')">×</button>
     </div>
-    <div id="proj-body-proj-1784123786822" style="display:none">
+    <div id="proj-body-proj-1784123786822" style="display: none;">
     <table class="task-table" id="table-proj-1784123786822">
       <thead>
         <tr>
@@ -618,7 +618,7 @@
       <span class="project-meta">0/0 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-1784136566745')">×</button>
     </div>
-    <div id="proj-body-proj-1784136566745" style="display:none">
+    <div id="proj-body-proj-1784136566745" style="display: none;">
     <table class="task-table" id="table-proj-1784136566745">
       <thead>
         <tr>
@@ -642,7 +642,7 @@
       <span class="project-meta">0/2 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-1784136651304')">×</button>
     </div>
-    <div id="proj-body-proj-1784136651304" style="display:none">
+    <div id="proj-body-proj-1784136651304" style="display: none;">
     <table class="task-table" id="table-proj-1784136651304">
       <thead>
         <tr>
@@ -757,9 +757,9 @@ function renderAll() {
 }
 
 function applyReadOnly() {
-  // hide all editing controls
+  // hide editing-only controls
   document.querySelectorAll(
-    ".action-bar, .add-project-row, .btn-add, .btn-delete, .btn-add-subtask, .controls .filter-btn:not(.filter-btn-filter)"
+    ".action-bar, .add-project-row, .btn-add, .btn-delete, .btn-add-subtask"
   ).forEach(el => el.style.display = "none");
   // disable contenteditable
   document.querySelectorAll("[contenteditable]").forEach(el => {
