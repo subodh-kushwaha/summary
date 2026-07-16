@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work Summary</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --border: #e2e6ea;
+      --text: #212529;
+      --text-muted: #6c757d;
+      --accent: #0070f3;
+      --green: #28a745;
+      --yellow: #ffc107;
+      --red: #dc3545;
+      --blue: #17a2b8;
+      --purple: #6f42c1;
+      --gray: #adb5bd;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 { font-size: 20px; font-weight: 600; }
+    .last-updated { color: var(--text-muted); font-size: 13px; }
+    #last-updated-date { font-weight: 500; color: var(--accent); }
+    .autosave-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .autosave-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--gray);
+      transition: background .3s;
+    }
+    .autosave-dot.saving  { background: var(--yellow); }
+    .autosave-dot.saved   { background: var(--green); }
+    .autosave-dot.off     { background: var(--gray); }
+    main { max-width: 1200px; margin: 0 auto; padding: 28px 32px; }
+
+    /* Summary cards */
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+    .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+    .stat-card.total   .value { color: var(--text); }
+    .stat-card.active  .value { color: var(--accent); }
+    .stat-card.done    .value { color: var(--green); }
+    .stat-card.blocked .value { color: var(--red); }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .controls input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+    .controls input[type="text"]:focus { border-color: var(--accent); }
+    .filter-btn {
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 13px;
+      transition: background .15s;
+    }
+    .filter-btn:hover { background: var(--bg); }
+    .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-add {
+      padding: 7px 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: auto;
+    }
+    .btn-add:hover { opacity: .9; }
+
+    /* Project sections */
+    .project-section { margin-bottom: 28px; border-radius: var(--radius); overflow: hidden; }
+    .project-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0;
+      padding: 10px 16px;
+      border-left: 4px solid transparent;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .project-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .project-header h2 { font-size: 15px; font-weight: 600; }
+    .project-header .project-meta { color: var(--text-muted); font-size: 12px; }
+
+    /* Task table */
+    .task-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .task-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-muted);
+      background: #f1f3f5;
+      border-bottom: 1px solid var(--border);
+    }
+    .task-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .task-table tr:last-child td { border-bottom: none; }
+    .task-row[data-hidden="true"] { display: none; }
+    .task-row:hover > td { filter: brightness(0.96); }
+
+    /* Expand toggle */
+    .expand-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 2px 4px;
+      border-radius: 3px;
+      line-height: 1;
+      transition: transform .2s;
+      display: inline-flex;
+      align-items: center;
+    }
+    .expand-btn:hover { color: var(--accent); }
+    .expand-btn.open { transform: rotate(90deg); }
+
+    .task-name-cell { display: flex; align-items: center; gap: 6px; }
+    .task-name-text { flex: 1; outline: none; cursor: text; }
+    .task-name-text:focus { background: #f0f6ff; border-radius: 3px; padding: 1px 3px; }
+
+    .subtask-count {
+      font-size: 10px;
+      color: var(--text-muted);
+      background: #f1f3f5;
+      border-radius: 10px;
+      padding: 1px 6px;
+      white-space: nowrap;
+    }
+    .subtask-count.has-open { background: #e3f0ff; color: var(--accent); }
+
+    /* Subtask rows */
+    .subtask-row > td { border-bottom: 1px solid #eef0f2; padding: 7px 14px 7px 42px; }
+    .subtask-row:hover > td { filter: brightness(0.96); }
+    .subtask-row[data-hidden="true"] { display: none; }
+
+    .subtask-name-cell { display: flex; align-items: center; gap: 6px; }
+    .subtask-indent { color: var(--border); font-size: 14px; flex-shrink: 0; }
+    .subtask-name-text { flex: 1; outline: none; cursor: text; font-size: 13px; }
+    .subtask-name-text:focus { background: #f0f6ff; border-radius: 3px; padding: 1px 3px; }
+
+    .add-subtask-row > td {
+      padding: 5px 14px 5px 42px;
+      background: #fafbfc;
+      border-bottom: 1px solid #eef0f2;
+    }
+    .btn-add-subtask {
+      background: none;
+      border: 1px dashed var(--border);
+      color: var(--text-muted);
+      border-radius: 5px;
+      padding: 3px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-add-subtask:hover { border-color: var(--accent); color: var(--accent); background: #f0f6ff; }
+
+    /* Status badges */
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .badge-in-progress { background: #e3f0ff; color: #0070f3; }
+    .badge-done        { background: #e6f9ee; color: #1a7a3f; }
+    .badge-blocked     { background: #fde8e8; color: #b91c1c; }
+    .badge-todo        { background: #f3f4f6; color: #4b5563; }
+    .badge-review      { background: #fef3c7; color: #92400e; }
+
+    /* Editable cells */
+    [contenteditable] { outline: none; cursor: text; }
+    [contenteditable]:focus { background: #f0f6ff; border-radius: 3px; padding: 1px 3px; }
+    .col-task    { min-width: 200px; }
+    .col-status  { width: 140px; }
+    .col-due     { width: 100px; }
+    .col-notes   { min-width: 180px; }
+    .col-actions { width: 70px; text-align: center; }
+
+    /* Delete btn */
+    .btn-delete {
+      background: none;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 4px;
+      border-radius: 3px;
+      line-height: 1;
+    }
+    .btn-delete:hover { color: var(--red); background: #fde8e8; }
+
+    /* Add project section */
+    .add-project-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .add-project-row input {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .color-picker { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 6px; padding: 2px; cursor: pointer; }
+
+    /* Action bar */
+    .action-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 24px;
+      display: flex;
+      gap: 10px;
+    }
+    .action-bar button {
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .btn-save   { background: var(--green); color: #fff; }
+    .btn-export { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-autosave { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-autosave.on { background: #e6f9ee; color: #1a7a3f; border-color: var(--green); }
+    .btn-save:hover   { opacity: .9; }
+    .btn-export:hover { background: var(--bg); }
+    .btn-autosave:hover { background: var(--bg); }
+
+    .toast {
+      position: fixed;
+      bottom: 70px;
+      right: 24px;
+      background: #222;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 700px) {
+      main { padding: 16px; }
+      header { padding: 14px 16px; }
+      .col-notes, .col-due { display: none; }
+    }
+    @media print {
+      .action-bar, .controls, .col-actions, .btn-delete, .expand-btn, .btn-add-subtask { display: none; }
+      body { background: #fff; }
+      .subtask-row > td, .add-subtask-row > td { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Work Summary</h1>
+    <div class="last-updated">Last updated: <span id="last-updated-date">—</span></div>
+  </div>
+  <div class="autosave-status">
+    <div class="autosave-dot off" id="autosave-dot"></div>
+    <span id="autosave-label">Autosave off</span>
+  </div>
+</header>
+
+<main>
+  <div class="summary-row">
+    <div class="stat-card total">
+      <div class="label">Total Tasks</div>
+      <div class="value" id="stat-total">0</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px"><span id="stat-sub-total">0</span> subtasks</div>
+    </div>
+    <div class="stat-card active">
+      <div class="label">In Progress</div>
+      <div class="value" id="stat-inprogress">0</div>
+      <div style="font-size:11px;color:var(--accent);margin-top:4px"><span id="stat-sub-open">0</span> subtasks open</div>
+    </div>
+    <div class="stat-card done">
+      <div class="label">Done</div>
+      <div class="value" id="stat-done">0</div>
+      <div style="font-size:11px;color:var(--green);margin-top:4px"><span id="stat-sub-done">0</span> subtasks done</div>
+    </div>
+    <div class="stat-card blocked">
+      <div class="label">Blocked</div>
+      <div class="value" id="stat-blocked">0</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="search-box" placeholder="Search tasks…" oninput="filterTasks()" />
+    <button class="filter-btn active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-btn" onclick="setFilter(this,'In Progress')">In Progress</button>
+    <button class="filter-btn" onclick="setFilter(this,'Blocked')">Blocked</button>
+    <button class="filter-btn" onclick="setFilter(this,'Review')">In Review</button>
+    <button class="filter-btn" onclick="setFilter(this,'Done')">Done</button>
+    <button class="filter-btn" onclick="expandAll(true)" title="Expand all subtasks">⊞ Expand All</button>
+    <button class="filter-btn" onclick="expandAll(false)" title="Collapse all subtasks">⊟ Collapse All</button>
+    <button class="btn-add" onclick="addTask()">+ Add Task</button>
+  </div>
+
+  <div id="projects-container"></div>
+
+  <div class="add-project-row">
+    <input type="text" id="new-project-name" placeholder="New project name…" />
+    <input type="color" class="color-picker" id="new-project-color" value="#0070f3" title="Project color" />
+    <button class="filter-btn" onclick="addProject()">+ Add Project</button>
+  </div>
+</main>
+
+<div class="action-bar">
+  <button class="btn-export" onclick="exportPrint()">Print / PDF</button>
+  <button class="btn-autosave" id="btn-autosave" onclick="toggleAutosave()">Autosave: Off</button>
+  <button class="btn-save" onclick="saveData()">Save</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT_DATA = {
+  projects: [
+    {
+      id: "proj-1",
+      name: "Project Alpha",
+      color: "#0070f3",
+      tasks: [
+        { id: "t1", name: "Define requirements", status: "Done", due: "2026-07-10", notes: "Approved by stakeholders", subtasks: [] },
+        { id: "t2", name: "Design architecture", status: "In Progress", due: "2026-07-18", notes: "Draft shared with team",
+          subtasks: [
+            { id: "s1", name: "Draw system diagram", status: "Done", due: "" },
+            { id: "s2", name: "Review with tech lead", status: "In Progress", due: "2026-07-17" }
+          ]
+        },
+        { id: "t3", name: "Implement core module", status: "Todo", due: "2026-07-25", notes: "", subtasks: [] }
+      ]
+    },
+    {
+      id: "proj-2",
+      name: "Project Beta",
+      color: "#28a745",
+      tasks: [
+        { id: "t4", name: "Kickoff meeting", status: "Done", due: "2026-07-05", notes: "Meeting minutes shared", subtasks: [] },
+        { id: "t5", name: "UAT testing", status: "Blocked", due: "2026-07-20", notes: "Waiting for test environment", subtasks: [] }
+      ]
+    }
+  ],
+  lastUpdated: ""
+};
+
+let data = null;
+let activeFilter = "all";
+
+function init() {
+  const saved = localStorage.getItem("work-summary-data");
+  data = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+  // migrate old tasks that lack subtasks field
+  data.projects.forEach(p => p.tasks.forEach(t => { if (!t.subtasks) t.subtasks = []; }));
+  renderAll();
+}
+
+function renderAll() {
+  document.getElementById("last-updated-date").textContent = data.lastUpdated || "Not saved yet";
+  renderProjects();
+  updateStats();
+  initAutosave();
+}
+
+// ─── Projects ──────────────────────────────────────────────────────────────────
+function renderProjects() {
+  const container = document.getElementById("projects-container");
+  container.innerHTML = "";
+  data.projects.forEach(proj => container.appendChild(buildProjectSection(proj)));
+}
+
+const PROJECT_HEADER_COLORS = [
+  "#fff3e0", // orange tint
+  "#e3f2fd", // blue tint
+  "#e8f5e9", // green tint
+  "#f3e5f5", // purple tint
+  "#fffde7", // yellow tint
+  "#e0f7fa", // cyan tint
+  "#fce4ec", // pink tint
+  "#ede7f6", // violet tint
+];
+
+function buildProjectSection(proj) {
+  const section = document.createElement("div");
+  section.className = "project-section";
+  section.dataset.projectId = proj.id;
+
+  const projIndex = data.projects.findIndex(p => p.id === proj.id);
+  const headerBg = PROJECT_HEADER_COLORS[projIndex % PROJECT_HEADER_COLORS.length];
+
+  const taskCount = proj.tasks.length;
+  const doneCount = proj.tasks.filter(t => t.status === "Done").length;
+
+  section.innerHTML = `
+    <div class="project-header" style="background:${headerBg};border-left-color:${proj.color}">
+      <button class="expand-btn" id="proj-expand-${proj.id}" onclick="toggleProject('${proj.id}')" title="Collapse/expand project">▶</button>
+      <div class="project-dot" style="background:${proj.color}"></div>
+      <h2 contenteditable="true" onblur="renameProject('${proj.id}', this.textContent)">${proj.name}</h2>
+      <span class="project-meta">${doneCount}/${taskCount} done</span>
+      <button class="btn-delete" title="Delete project" onclick="deleteProject('${proj.id}')">×</button>
+    </div>
+    <div id="proj-body-${proj.id}" style="display:none">
+    <table class="task-table" id="table-${proj.id}">
+      <thead>
+        <tr>
+          <th class="col-task">Task</th>
+          <th class="col-status">Status</th>
+          <th class="col-due">Due</th>
+          <th class="col-notes">Notes</th>
+          <th class="col-actions"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody-${proj.id}"></tbody>
+    </table>
+    <div style="margin-top:8px">
+      <button class="filter-btn" style="font-size:12px" onclick="addTaskToProject('${proj.id}')">+ Add task to ${proj.name}</button>
+    </div>
+    </div>`;
+
+  const tbody = section.querySelector(`#tbody-${proj.id}`);
+  proj.tasks.forEach(task => appendTaskRows(tbody, task, proj.id));
+  return section;
+}
+
+// Appends a task row + its subtask rows + the add-subtask row into a tbody
+function appendTaskRows(tbody, task, projId) {
+  const taskRow = buildTaskRow(task, projId);
+  tbody.appendChild(taskRow);
+  const rowColor = taskRow.dataset.rowColor || "#fafbfc";
+  task.subtasks.forEach(sub => tbody.appendChild(buildSubtaskRow(sub, task.id, projId, rowColor)));
+  tbody.appendChild(buildAddSubtaskRow(task.id, projId));
+  if (task.subtasks.length === 0) setSubtasksVisible(task.id, false);
+}
+
+// ─── Task row ──────────────────────────────────────────────────────────────────
+const TASK_COLORS = [
+  "#fff8f0", // soft orange
+  "#f0f7ff", // soft blue
+  "#f0fff4", // soft green
+  "#fdf0ff", // soft purple
+  "#fffbf0", // soft yellow
+  "#f0fbff", // soft cyan
+  "#fff0f3", // soft pink
+  "#f5f0ff", // soft violet
+];
+
+function buildTaskRow(task, projId) {
+  const proj = data.projects.find(p => p.id === projId);
+  const taskIndex = proj ? proj.tasks.findIndex(t => t.id === task.id) : 0;
+  const rowColor = TASK_COLORS[taskIndex % TASK_COLORS.length];
+
+  const tr = document.createElement("tr");
+  tr.className = "task-row";
+  tr.dataset.taskId = task.id;
+  tr.dataset.status = task.status;
+  tr.dataset.projId = projId;
+  tr.dataset.rowColor = rowColor;
+  tr.style.background = rowColor;
+
+  const subCount = task.subtasks.length;
+  const openSubs = task.subtasks.filter(s => s.status !== "Done").length;
+  const countLabel = subCount > 0
+    ? `<span class="subtask-count ${openSubs > 0 ? 'has-open' : ''}">${subCount - openSubs}/${subCount}</span>`
+    : "";
+
+  tr.innerHTML = `
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-${task.id}" onclick="toggleSubtasks('${task.id}')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true"
+          onblur="updateTaskField('${task.id}','name',this.textContent)">${task.name}</span>
+        ${countLabel}
+      </div>
+    </td>
+    <td class="col-status">${statusSelect(task.id, task.status, false)}</td>
+    <td class="col-due"><input type="date" value="${task.due}" onchange="updateTaskField('${task.id}','due',this.value)"
+      style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%" /></td>
+    <td class="col-notes" contenteditable="true"
+      onblur="updateTaskField('${task.id}','notes',this.textContent)">${task.notes}</td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('${task.id}','${projId}')">×</button></td>`;
+  return tr;
+}
+
+// ─── Subtask row ───────────────────────────────────────────────────────────────
+function buildSubtaskRow(sub, parentTaskId, projId, rowColor) {
+  const tr = document.createElement("tr");
+  tr.className = "subtask-row";
+  tr.dataset.subtaskId = sub.id;
+  tr.dataset.parentTaskId = parentTaskId;
+  tr.dataset.status = sub.status;
+  tr.dataset.hidden = "true";
+  if (rowColor) tr.style.background = rowColor;
+
+  tr.innerHTML = `
+    <td class="col-task" colspan="1">
+      <div class="subtask-name-cell">
+        <span class="subtask-indent">└</span>
+        <span class="subtask-name-text" contenteditable="true"
+          onblur="updateSubtaskField('${sub.id}','${parentTaskId}','name',this.textContent)">${sub.name}</span>
+      </div>
+    </td>
+    <td class="col-status">${statusSelect(sub.id, sub.status, true, parentTaskId)}</td>
+    <td class="col-due"><input type="date" value="${sub.due}" onchange="updateSubtaskField('${sub.id}','${parentTaskId}','due',this.value)"
+      style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%" /></td>
+    <td class="col-notes" contenteditable="true"
+      onblur="updateSubtaskField('${sub.id}','${parentTaskId}','notes',this.textContent)">${sub.notes || ""}</td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('${sub.id}','${parentTaskId}','${projId}')">×</button></td>`;
+  return tr;
+}
+
+function buildAddSubtaskRow(taskId, projId) {
+  const tr = document.createElement("tr");
+  tr.className = "add-subtask-row";
+  tr.dataset.parentTaskId = taskId;
+  tr.dataset.hidden = "true";
+  tr.innerHTML = `
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('${taskId}','${projId}')">+ Add subtask</button>
+    </td>`;
+  return tr;
+}
+
+// ─── Expand / collapse subtasks ────────────────────────────────────────────────
+function toggleSubtasks(taskId) {
+  const btn = document.getElementById(`expand-${taskId}`);
+  const isOpen = btn.classList.contains("open");
+  setSubtasksVisible(taskId, !isOpen);
+}
+
+function toggleProject(projId) {
+  const btn  = document.getElementById(`proj-expand-${projId}`);
+  const body = document.getElementById(`proj-body-${projId}`);
+  const isOpen = btn.classList.contains("open");
+  btn.classList.toggle("open", !isOpen);
+  body.style.display = isOpen ? "none" : "";
+}
+
+function expandAll(visible) {
+  data.projects.forEach(proj => {
+    // expand/collapse project body
+    const btn  = document.getElementById(`proj-expand-${proj.id}`);
+    const body = document.getElementById(`proj-body-${proj.id}`);
+    if (btn)  btn.classList.toggle("open", visible);
+    if (body) body.style.display = visible ? "" : "none";
+    // expand/collapse subtasks
+    proj.tasks.forEach(task => {
+      if (task.subtasks.length > 0) setSubtasksVisible(task.id, visible);
+    });
+  });
+}
+
+function setSubtasksVisible(taskId, visible) {
+  const btn = document.getElementById(`expand-${taskId}`);
+  if (btn) btn.classList.toggle("open", visible);
+
+  document.querySelectorAll(`.subtask-row[data-parent-task-id="${taskId}"]`).forEach(r => {
+    r.dataset.hidden = visible ? "false" : "true";
+  });
+  document.querySelectorAll(`.add-subtask-row[data-parent-task-id="${taskId}"]`).forEach(r => {
+    r.dataset.hidden = visible ? "false" : "true";
+  });
+}
+
+// ─── Selects / inputs ──────────────────────────────────────────────────────────
+const STATUS_STYLES = {
+  "Todo":        "background:#f3f4f6;color:#4b5563",
+  "In Progress": "background:#e3f0ff;color:#0070f3",
+  "Review":      "background:#fef3c7;color:#92400e",
+  "Blocked":     "background:#fde8e8;color:#b91c1c",
+  "Done":        "background:#e6f9ee;color:#1a7a3f"
+};
+
+function statusSelect(id, current, isSubtask, parentTaskId) {
+  const options = ["Todo","In Progress","Review","Blocked","Done"];
+  const onChange = isSubtask
+    ? `updateSubtaskField('${id}','${parentTaskId}','status',this.value);applyStatusColor(this)`
+    : `updateTaskField('${id}','status',this.value);updateRowMeta(this);applyStatusColor(this)`;
+  const style = STATUS_STYLES[current] || STATUS_STYLES["Todo"];
+  return `<select onchange="${onChange}" data-id="${id}"
+    style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;${style}">
+    ${options.map(o => `<option value="${o}" ${o===current?"selected":""}>${o}</option>`).join("")}
+  </select>`;
+}
+
+function applyStatusColor(el) {
+  const style = STATUS_STYLES[el.value] || STATUS_STYLES["Todo"];
+  style.split(";").forEach(rule => {
+    const [prop, val] = rule.split(":");
+    if (prop && val) el.style[prop.trim().replace(/-([a-z])/g, (_,c) => c.toUpperCase())] = val.trim();
+  });
+}
+
+// ─── Data helpers ──────────────────────────────────────────────────────────────
+function findTask(taskId) {
+  for (const proj of data.projects) {
+    const t = proj.tasks.find(t => t.id === taskId);
+    if (t) return t;
+  }
+  return null;
+}
+
+function findSubtask(subtaskId, parentTaskId) {
+  const task = findTask(parentTaskId);
+  return task ? task.subtasks.find(s => s.id === subtaskId) : null;
+}
+
+// ─── Update task ───────────────────────────────────────────────────────────────
+function updateTaskField(taskId, field, value) {
+  const task = findTask(taskId);
+  if (task) task[field] = value.trim ? value.trim() : value;
+  if (field === "status") {
+    const row = document.querySelector(`.task-row[data-task-id="${taskId}"]`);
+    if (row) row.dataset.status = value;
+    filterTasks();
+    renderProjects();
+  }
+  updateStats();
+}
+
+function updateRowMeta(selectEl) {
+  const row = selectEl.closest("tr");
+  if (row) row.dataset.status = selectEl.value;
+}
+
+// ─── Update subtask
+
+// ─── Update subtask ────────────────────────────────────────────────────────────
+function updateSubtaskField(subtaskId, parentTaskId, field, value) {
+  const sub = findSubtask(subtaskId, parentTaskId);
+  if (sub) sub[field] = value.trim ? value.trim() : value;
+  if (field === "status") {
+    const row = document.querySelector(`.subtask-row[data-subtask-id="${subtaskId}"]`);
+    if (row) row.dataset.status = value;
+    refreshSubtaskCount(parentTaskId);
+  }
+  updateStats();
+}
+
+function refreshSubtaskCount(taskId) {
+  const task = findTask(taskId);
+  if (!task) return;
+  const subCount = task.subtasks.length;
+  const openSubs = task.subtasks.filter(s => s.status !== "Done").length;
+  const taskRow = document.querySelector(`.task-row[data-task-id="${taskId}"]`);
+  if (!taskRow) return;
+  let badge = taskRow.querySelector(".subtask-count");
+  if (subCount === 0) { if (badge) badge.remove(); return; }
+  if (!badge) {
+    badge = document.createElement("span");
+    badge.className = "subtask-count";
+    taskRow.querySelector(".task-name-cell").appendChild(badge);
+  }
+  badge.className = "subtask-count" + (openSubs > 0 ? " has-open" : "");
+  badge.textContent = `${subCount - openSubs}/${subCount}`;
+}
+
+function renameProject(projId, name) {
+  const proj = data.projects.find(p => p.id === projId);
+  if (proj) proj.name = name.trim();
+}
+
+// ─── Add / delete ──────────────────────────────────────────────────────────────
+function addTask() {
+  if (!data.projects.length) { alert("Add a project first."); return; }
+  addTaskToProject(data.projects[0].id);
+}
+
+function addTaskToProject(projId) {
+  const proj = data.projects.find(p => p.id === projId);
+  if (!proj) return;
+  const id = "t" + Date.now();
+  const task = { id, name: "New task", status: "Todo", priority: "Medium", due: "", progress: 0, notes: "", subtasks: [] };
+  proj.tasks.push(task);
+  const tbody = document.getElementById(`tbody-${projId}`);
+  if (tbody) appendTaskRows(tbody, task, projId);
+  updateStats();
+}
+
+function addSubtask(taskId, projId) {
+  const task = findTask(taskId);
+  if (!task) return;
+  const id = "s" + Date.now();
+  const sub = { id, name: "New subtask", status: "Todo", due: "", notes: "" };
+  task.subtasks.push(sub);
+
+  // insert the new subtask row before the add-subtask row
+  const addRow = document.querySelector(`.add-subtask-row[data-parent-task-id="${taskId}"]`);
+  const tbody = addRow.closest("tbody");
+  const parentRow = tbody.querySelector(`.task-row[data-task-id="${taskId}"]`);
+  const rowColor = parentRow ? parentRow.dataset.rowColor : "#fafbfc";
+  const newRow = buildSubtaskRow(sub, taskId, projId, rowColor);
+  newRow.dataset.hidden = "false";
+  tbody.insertBefore(newRow, addRow);
+
+  setSubtasksVisible(taskId, true);
+  refreshSubtaskCount(taskId);
+  updateStats();
+}
+
+function deleteTask(taskId, projId) {
+  const proj = data.projects.find(p => p.id === projId);
+  if (!proj) return;
+  proj.tasks = proj.tasks.filter(t => t.id !== taskId);
+  // remove task row + all its subtask rows + add-subtask row
+  document.querySelectorAll(
+    `.task-row[data-task-id="${taskId}"],
+     .subtask-row[data-parent-task-id="${taskId}"],
+     .add-subtask-row[data-parent-task-id="${taskId}"]`
+  ).forEach(el => el.remove());
+  updateStats();
+  renderProjects();
+}
+
+function deleteSubtask(subtaskId, parentTaskId, projId) {
+  const task = findTask(parentTaskId);
+  if (!task) return;
+  task.subtasks = task.subtasks.filter(s => s.id !== subtaskId);
+  const row = document.querySelector(`.subtask-row[data-subtask-id="${subtaskId}"]`);
+  if (row) row.remove();
+  refreshSubtaskCount(parentTaskId);
+  updateStats();
+}
+
+function addProject() {
+  const name = document.getElementById("new-project-name").value.trim();
+  const color = document.getElementById("new-project-color").value;
+  if (!name) { alert("Enter a project name."); return; }
+  const proj = { id: "proj-" + Date.now(), name, color, tasks: [] };
+  data.projects.push(proj);
+  document.getElementById("new-project-name").value = "";
+  document.getElementById("projects-container").appendChild(buildProjectSection(proj));
+  updateStats();
+}
+
+function deleteProject(projId) {
+  if (!confirm("Delete this project and all its tasks?")) return;
+  data.projects = data.projects.filter(p => p.id !== projId);
+  const section = document.querySelector(`.project-section[data-project-id="${projId}"]`);
+  if (section) section.remove();
+  updateStats();
+}
+
+// ─── Filter & search ───────────────────────────────────────────────────────────
+function setFilter(btn, status) {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  activeFilter = status;
+  filterTasks();
+}
+
+function filterTasks() {
+  const query = document.getElementById("search-box").value.toLowerCase();
+  document.querySelectorAll(".task-row").forEach(row => {
+    const matchStatus = activeFilter === "all" || row.dataset.status === activeFilter;
+    const text = row.textContent.toLowerCase();
+    const matchSearch = !query || text.includes(query);
+    row.dataset.hidden = !(matchStatus && matchSearch);
+  });
+}
+
+// ─── Stats ─────────────────────────────────────────────────────────────────────
+function updateStats() {
+  let total = 0, inprog = 0, done = 0, blocked = 0;
+  let subTotal = 0, subDone = 0;
+  data.projects.forEach(proj => proj.tasks.forEach(t => {
+    total++;
+    if (t.status === "In Progress") inprog++;
+    if (t.status === "Done") done++;
+    if (t.status === "Blocked") blocked++;
+    t.subtasks.forEach(s => {
+      subTotal++;
+      if (s.status === "Done") subDone++;
+    });
+  }));
+  document.getElementById("stat-total").textContent = total;
+  document.getElementById("stat-inprogress").textContent = inprog;
+  document.getElementById("stat-done").textContent = done;
+  document.getElementById("stat-blocked").textContent = blocked;
+  document.getElementById("stat-sub-total").textContent = subTotal;
+  document.getElementById("stat-sub-done").textContent = subDone;
+  document.getElementById("stat-sub-open").textContent = subTotal - subDone;
+}
+
+// ─── Save / export ─────────────────────────────────────────────────────────────
+function saveData(silent) {
+  document.querySelectorAll(".task-row").forEach(row => {
+    const taskId = row.dataset.taskId;
+    const task = findTask(taskId);
+    if (!task) return;
+    const nameEl = row.querySelector(".task-name-text");
+    const notesEl = row.querySelector(".col-notes");
+    if (nameEl)  task.name  = nameEl.textContent.trim();
+    if (notesEl) task.notes = notesEl.textContent.trim();
+  });
+  document.querySelectorAll(".subtask-row").forEach(row => {
+    const subId = row.dataset.subtaskId;
+    const parentId = row.dataset.parentTaskId;
+    const sub = findSubtask(subId, parentId);
+    if (!sub) return;
+    const nameEl = row.querySelector(".subtask-name-text");
+    const notesEl = row.querySelector(".col-notes");
+    if (nameEl)  sub.name  = nameEl.textContent.trim();
+    if (notesEl) sub.notes = notesEl.textContent.trim();
+  });
+
+  const now = new Date();
+  data.lastUpdated = now.toLocaleDateString("en-US", { year:"numeric", month:"short", day:"numeric" });
+  localStorage.setItem("work-summary-data", JSON.stringify(data));
+  document.getElementById("last-updated-date").textContent = data.lastUpdated;
+
+  isDirty = false;
+  if (autosaveEnabled) setAutosaveDot("saved");
+  if (!silent) showToast("Saved!");
+}
+
+function exportPrint() { window.print(); }
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+// ─── Autosave ──────────────────────────────────────────────────────────────────
+let autosaveEnabled = localStorage.getItem("autosave-enabled") === "true";
+let autosaveTimer = null;
+let isDirty = false;
+
+function markDirty() {
+  isDirty = true;
+  if (autosaveEnabled) setAutosaveDot("saving");
+}
+
+function setAutosaveDot(state) {
+  const dot   = document.getElementById("autosave-dot");
+  const label = document.getElementById("autosave-label");
+  if (!dot) return;
+  dot.className = "autosave-dot " + state;
+  if (state === "saving")    label.textContent = "Unsaved changes…";
+  else if (state === "saved") label.textContent = "Autosaved";
+  else                        label.textContent = "Autosave off";
+}
+
+function toggleAutosave() {
+  autosaveEnabled = !autosaveEnabled;
+  localStorage.setItem("autosave-enabled", autosaveEnabled);
+  const btn = document.getElementById("btn-autosave");
+  btn.textContent = "Autosave: " + (autosaveEnabled ? "On" : "Off");
+  btn.classList.toggle("on", autosaveEnabled);
+  if (autosaveEnabled) {
+    startAutosaveTimer();
+    setAutosaveDot(isDirty ? "saving" : "saved");
+    showToast("Autosave enabled — saves every 30 s");
+  } else {
+    clearInterval(autosaveTimer);
+    autosaveTimer = null;
+    setAutosaveDot("off");
+    showToast("Autosave disabled");
+  }
+}
+
+function startAutosaveTimer() {
+  if (autosaveTimer) clearInterval(autosaveTimer);
+  autosaveTimer = setInterval(() => {
+    if (isDirty) saveData(true);
+  }, 30000);
+}
+
+function initAutosave() {
+  const btn = document.getElementById("btn-autosave");
+  if (autosaveEnabled) {
+    btn.textContent = "Autosave: On";
+    btn.classList.add("on");
+    setAutosaveDot("saved");
+    startAutosaveTimer();
+  }
+  const container = document.getElementById("projects-container");
+  container.addEventListener("input",  markDirty);
+  container.addEventListener("change", markDirty);
+  container.addEventListener("blur",   markDirty, true);
+}
+
+init();
+</script>
+</body>
+</html>
