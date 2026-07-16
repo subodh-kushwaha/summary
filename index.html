@@ -737,6 +737,9 @@ const DEFAULT_DATA = {"projects":[{"id":"proj-1","name":"HANA Cloud","color":"#0
 let data = null;
 let activeFilter = "all";
 
+// true when viewed on GitHub Pages or any web host (not a local file)
+const IS_READONLY = location.protocol === "https:" || location.protocol === "http:";
+
 function init() {
   const saved = localStorage.getItem("work-summary-data");
   data = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
@@ -750,6 +753,31 @@ function renderAll() {
   renderProjects();
   updateStats();
   initAutosave();
+  if (IS_READONLY) applyReadOnly();
+}
+
+function applyReadOnly() {
+  // hide all editing controls
+  document.querySelectorAll(
+    ".action-bar, .add-project-row, .btn-add, .btn-delete, .btn-add-subtask, .controls .filter-btn:not(.filter-btn-filter)"
+  ).forEach(el => el.style.display = "none");
+  // disable contenteditable
+  document.querySelectorAll("[contenteditable]").forEach(el => {
+    el.contentEditable = "false";
+    el.style.cursor = "default";
+  });
+  // disable all selects and inputs inside tables
+  document.querySelectorAll(".task-table select, .task-table input").forEach(el => {
+    el.disabled = true;
+    el.style.pointerEvents = "none";
+  });
+  // hide add-task buttons inside project sections
+  document.querySelectorAll(".project-section > div:last-child").forEach(el => el.style.display = "none");
+  // show read-only badge in header
+  const badge = document.createElement("span");
+  badge.textContent = "View only";
+  badge.style.cssText = "font-size:11px;background:#f1f3f5;color:#6c757d;padding:3px 10px;border-radius:12px;font-weight:600;";
+  document.querySelector("header div").appendChild(badge);
 }
 
 // ─── Projects ──────────────────────────────────────────────────────────────────
