@@ -329,7 +329,7 @@
 <header>
   <div>
     <h1>Work Summary</h1>
-    <div class="last-updated">Last updated: <span id="last-updated-date">Jul 21, 2026</span></div>
+    <div class="last-updated">Last updated: <span id="last-updated-date">Jul 22, 2026</span></div>
   </div>
   <div class="autosave-status">
     <div class="autosave-dot saved" id="autosave-dot"></div>
@@ -343,27 +343,39 @@
 
 <main>
   <div class="summary-row">
+    <div class="stat-card" style="border-top:3px solid var(--purple)">
+      <div class="label">Projects</div>
+      <div class="value" id="stat-projects" style="color:var(--purple)">6</div>
+      <div style="font-size:11px;color:var(--accent);margin-top:4px"><span id="stat-projects-active">6</span> active</div>
+      <div style="font-size:11px;color:var(--green);margin-top:2px"><span id="stat-projects-done">0</span> completed</div>
+    </div>
     <div class="stat-card total">
       <div class="label">Total Tasks</div>
-      <div class="value" id="stat-total">14</div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:4px"><span id="stat-sub-total">17</span> subtasks</div>
+      <div class="value" id="stat-total">22</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px"><span id="stat-sub-total">16</span> subtasks</div>
     </div>
     <div class="stat-card active">
       <div class="label">In Progress</div>
-      <div class="value" id="stat-inprogress">7</div>
-      <div style="font-size:11px;color:var(--accent);margin-top:4px"><span id="stat-sub-open">14</span> subtasks open</div>
+      <div class="value" id="stat-inprogress">11</div>
+      <div style="font-size:11px;color:var(--accent);margin-top:4px"><span id="stat-sub-inprog">9</span> subtasks</div>
     </div>
     <div class="stat-card done">
       <div class="label">Done</div>
-      <div class="value" id="stat-done">2</div>
-      <div style="font-size:11px;color:var(--green);margin-top:4px"><span id="stat-sub-done">3</span> subtasks done</div>
+      <div class="value" id="stat-done">3</div>
+      <div style="font-size:11px;color:var(--green);margin-top:4px"><span id="stat-sub-done">3</span> subtasks</div>
     </div>
     <div class="stat-card blocked">
       <div class="label">Blocked</div>
       <div class="value" id="stat-blocked">0</div>
-      <div style="font-size:11px;color:var(--red);margin-top:4px"><span id="stat-sub-blocked">2</span> subtasks blocked</div>
+      <div style="font-size:11px;color:var(--red);margin-top:4px"><span id="stat-sub-blocked">1</span> subtasks</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid var(--gray)">
+      <div class="label">Todo</div>
+      <div class="value" id="stat-todo" style="color:var(--gray)">8</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px"><span id="stat-sub-todo">3</span> subtasks</div>
     </div>
   </div>
+  
 
   <div class="controls">
     <button class="filter-btn active" onclick="expandAll(true)" title="Expand all subtasks">⊞ Expand All</button>
@@ -379,7 +391,7 @@
         <h2 contenteditable="true" onblur="renameProject('proj-1', this.textContent)">One Horizon: HANA Cloud Adoption &amp; Migration</h2>
         <span class="project-desc-text" contenteditable="true" onblur="updateProjectDesc('proj-1', this.textContent)">Migrate all BizX and LMS tenants from HANA 2 to HANA Cloud Database.</span>
       </div>
-      <span class="project-meta">1/4 done</span>
+      <span class="project-meta">1/7 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-1')">×</button>
     </div>
     <div id="proj-body-proj-1" style="display:none">
@@ -487,18 +499,18 @@
   </select></td>
     <td class="col-due"><input type="date" value="" onchange="updateTaskField('t1784136108960','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
     <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784136108960','notes',this.textContent)"></td>
-    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784136108960','proj-1')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784136222408" data-parent-task-id="t1784136108960" data-status="Blocked" data-hidden="true" style="background: rgb(240, 255, 244);">
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784136108960','proj-1')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784136222408" data-parent-task-id="t1784136108960" data-status="In Progress" data-hidden="true" style="background: rgb(240, 255, 244);">
     <td class="col-task" colspan="1">
       <div class="subtask-name-cell">
         <span class="subtask-indent">└</span>
         <span class="subtask-name-text" contenteditable="true" onblur="updateSubtaskField('s1784136222408','t1784136108960','name',this.textContent)">App Stack Build and Setup</span>
       </div>
     </td>
-    <td class="col-status"><select onchange="updateSubtaskField('s1784136222408','t1784136108960','status',this.value);applyStatusColor(this)" data-id="s1784136222408" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#fde8e8;color:#b91c1c">
-    <option value="Todo">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked" selected="">Blocked</option><option value="Done">Done</option>
+    <td class="col-status"><select onchange="updateSubtaskField('s1784136222408','t1784136108960','status',this.value);applyStatusColor(this)" data-id="s1784136222408" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e3f0ff;color:#0070f3">
+    <option value="Todo">Todo</option><option value="In Progress" selected="">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
   </select></td>
     <td class="col-due"><input type="date" value="" onchange="updateSubtaskField('s1784136222408','t1784136108960','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
-    <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784136222408','t1784136108960','notes',this.textContent)">App build blocked due to connection to HANA Cloud db is not working.</td>
+    <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784136222408','t1784136108960','notes',this.textContent)">ps57lp01 build completed.</td>
     <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('s1784136222408','t1784136108960','proj-1')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784136237616" data-parent-task-id="t1784136108960" data-status="Todo" data-hidden="true" style="background: rgb(240, 255, 244);">
     <td class="col-task" colspan="1">
       <div class="subtask-name-cell">
@@ -530,7 +542,7 @@
     <td class="col-task">
       <div class="task-name-cell">
         <button class="expand-btn" id="expand-t1784136125472" onclick="toggleSubtasks('t1784136125472')" title="Show/hide subtasks">▶</button>
-        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784136125472','name',this.textContent)">DC70 LMS Build</span>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784136125472','name',this.textContent)">DC70 LMS Go Live</span>
         <span class="subtask-count has-open">0/3</span>
       </div>
     </td>
@@ -550,7 +562,7 @@
     <option value="Todo">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked" selected="">Blocked</option><option value="Done">Done</option>
   </select></td>
     <td class="col-due"><input type="date" value="" onchange="updateSubtaskField('s1784136281745','t1784136125472','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
-    <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784136281745','t1784136125472','notes',this.textContent)">Capacity Issue</td>
+    <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784136281745','t1784136125472','notes',this.textContent)">ps70lp01 build completed. We have capacity issue for other pool build.</td>
     <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('s1784136281745','t1784136125472','proj-1')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784136285657" data-parent-task-id="t1784136125472" data-status="Todo" data-hidden="true" style="background: rgb(253, 240, 255);">
     <td class="col-task" colspan="1">
       <div class="subtask-name-cell">
@@ -563,21 +575,69 @@
   </select></td>
     <td class="col-due"><input type="date" value="" onchange="updateSubtaskField('s1784136285657','t1784136125472','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
     <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784136285657','t1784136125472','notes',this.textContent)"></td>
-    <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('s1784136285657','t1784136125472','proj-1')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784136289385" data-parent-task-id="t1784136125472" data-status="Todo" data-hidden="true" style="background: rgb(253, 240, 255);">
+    <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('s1784136285657','t1784136125472','proj-1')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784136289385" data-parent-task-id="t1784136125472" data-status="In Progress" data-hidden="true" style="background: rgb(253, 240, 255);">
     <td class="col-task" colspan="1">
       <div class="subtask-name-cell">
         <span class="subtask-indent">└</span>
         <span class="subtask-name-text" contenteditable="true" onblur="updateSubtaskField('s1784136289385','t1784136125472','name',this.textContent)">Load Test - baseline vs hana cloud pool</span>
       </div>
     </td>
-    <td class="col-status"><select onchange="updateSubtaskField('s1784136289385','t1784136125472','status',this.value);applyStatusColor(this)" data-id="s1784136289385" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#f3f4f6;color:#4b5563">
-    <option value="Todo" selected="">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+    <td class="col-status"><select onchange="updateSubtaskField('s1784136289385','t1784136125472','status',this.value);applyStatusColor(this)" data-id="s1784136289385" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e3f0ff;color:#0070f3">
+    <option value="Todo">Todo</option><option value="In Progress" selected="">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
   </select></td>
     <td class="col-due"><input type="date" value="" onchange="updateSubtaskField('s1784136289385','t1784136125472','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
     <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784136289385','t1784136125472','notes',this.textContent)"></td>
     <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('s1784136289385','t1784136125472','proj-1')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784136125472" data-hidden="true">
     <td colspan="7">
       <button class="btn-add-subtask" onclick="addSubtask('t1784136125472','proj-1')">+ Add subtask</button>
+    </td></tr><tr class="task-row" data-task-id="t1784702848457" data-status="In Progress" data-proj-id="proj-1" data-row-color="#fffbf0" style="background: rgb(255, 251, 240);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784702848457" onclick="toggleSubtasks('t1784702848457')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784702848457','name',this.textContent)">Extend BizX perf log retention</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784702848457','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784702848457" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e3f0ff;color:#0070f3">
+    <option value="Todo">Todo</option><option value="In Progress" selected="">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="2026-07-31" onchange="updateTaskField('t1784702848457','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784702848457','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784702848457','proj-1')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784702848457" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784702848457','proj-1')">+ Add subtask</button>
+    </td></tr><tr class="task-row" data-task-id="t1784702975251" data-status="In Progress" data-proj-id="proj-1" data-row-color="#f0fbff" style="background: rgb(240, 251, 255);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784702975251" onclick="toggleSubtasks('t1784702975251')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784702975251','name',this.textContent)">Splunk Dashboard for BizX HANA Cloud Migration</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784702975251','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784702975251" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e3f0ff;color:#0070f3">
+    <option value="Todo">Todo</option><option value="In Progress" selected="">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="2026-07-31" onchange="updateTaskField('t1784702975251','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784702975251','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784702975251','proj-1')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784702975251" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784702975251','proj-1')">+ Add subtask</button>
+    </td></tr><tr class="task-row" data-task-id="t1784731449082" data-status="Todo" data-proj-id="proj-1" data-row-color="#fff0f3" style="background: rgb(255, 240, 243);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784731449082" onclick="toggleSubtasks('t1784731449082')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784731449082','name',this.textContent)">New task</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784731449082','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784731449082" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#f3f4f6;color:#4b5563">
+    <option value="Todo" selected="">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="" onchange="updateTaskField('t1784731449082','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784731449082','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784731449082','proj-1')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784731449082" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784731449082','proj-1')">+ Add subtask</button>
     </td></tr></tbody>
     </table>
     <div style="margin-top:8px">
@@ -591,7 +651,7 @@
         <h2 contenteditable="true" onblur="renameProject('proj-2', this.textContent)">Ransomware Assessment</h2>
         <span class="project-desc-text" contenteditable="true" onblur="updateProjectDesc('proj-2', this.textContent)">The Ransomware Assessment measures the organization's preparedness to prevent, detect, respond to, contain, recover from, and restore business-critical applications, services, and infrastructure following a ransomware attack.</span>
       </div>
-      <span class="project-meta">0/0 done</span>
+      <span class="project-meta">0/3 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-2')">×</button>
     </div>
     <div id="proj-body-proj-2" style="display:none">
@@ -605,7 +665,55 @@
           <th class="col-actions"></th>
         </tr>
       </thead>
-      <tbody id="tbody-proj-2"></tbody>
+      <tbody id="tbody-proj-2"><tr class="task-row" data-task-id="t1784730318275" data-status="In Progress" data-proj-id="proj-2" data-row-color="#fff8f0" style="background: rgb(255, 248, 240);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784730318275" onclick="toggleSubtasks('t1784730318275')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784730318275','name',this.textContent)">BISO Document review</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784730318275','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784730318275" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e3f0ff;color:#0070f3">
+    <option value="Todo">Todo</option><option value="In Progress" selected="">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="" onchange="updateTaskField('t1784730318275','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784730318275','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784730318275','proj-2')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784730318275" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784730318275','proj-2')">+ Add subtask</button>
+    </td></tr><tr class="task-row" data-task-id="t1784731165305" data-status="Todo" data-proj-id="proj-2" data-row-color="#f0f7ff" style="background: rgb(240, 247, 255);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784731165305" onclick="toggleSubtasks('t1784731165305')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784731165305','name',this.textContent)">Wiki Page Update</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784731165305','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784731165305" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#f3f4f6;color:#4b5563">
+    <option value="Todo" selected="">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="" onchange="updateTaskField('t1784731165305','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784731165305','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784731165305','proj-2')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784731165305" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784731165305','proj-2')">+ Add subtask</button>
+    </td></tr><tr class="task-row" data-task-id="t1784731377313" data-status="Todo" data-proj-id="proj-2" data-row-color="#f0fff4" style="background: rgb(240, 255, 244);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784731377313" onclick="toggleSubtasks('t1784731377313')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784731377313','name',this.textContent)">1 Click Build Discussion</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784731377313','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784731377313" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#f3f4f6;color:#4b5563">
+    <option value="Todo" selected="">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="" onchange="updateTaskField('t1784731377313','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784731377313','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784731377313','proj-2')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784731377313" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784731377313','proj-2')">+ Add subtask</button>
+    </td></tr></tbody>
     </table>
     <div style="margin-top:8px">
       <button class="filter-btn" style="font-size:12px" onclick="addTaskToProject('proj-2')">+ Add task to Ransomware Assessment</button>
@@ -618,7 +726,7 @@
         <h2 contenteditable="true" onblur="renameProject('proj-1784123786822', this.textContent)">BAU</h2>
         <span class="project-desc-text" contenteditable="true" onblur="updateProjectDesc('proj-1784123786822', this.textContent)"></span>
       </div>
-      <span class="project-meta">0/0 done</span>
+      <span class="project-meta">1/2 done</span>
       <button class="btn-delete" title="Delete project" onclick="deleteProject('proj-1784123786822')">×</button>
     </div>
     <div id="proj-body-proj-1784123786822" style="display:none">
@@ -632,7 +740,39 @@
           <th class="col-actions"></th>
         </tr>
       </thead>
-      <tbody id="tbody-proj-1784123786822"></tbody>
+      <tbody id="tbody-proj-1784123786822"><tr class="task-row" data-task-id="t1784702590673" data-status="Done" data-proj-id="proj-1784123786822" data-row-color="#fff8f0" style="background: rgb(255, 248, 240);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784702590673" onclick="toggleSubtasks('t1784702590673')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784702590673','name',this.textContent)">Payroll EDR Test Support</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784702590673','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784702590673" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e6f9ee;color:#1a7a3f">
+    <option value="Todo">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done" selected="">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="2026-07-21" onchange="updateTaskField('t1784702590673','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784702590673','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784702590673','proj-1784123786822')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784702590673" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784702590673','proj-1784123786822')">+ Add subtask</button>
+    </td></tr><tr class="task-row" data-task-id="t1784702703097" data-status="In Progress" data-proj-id="proj-1784123786822" data-row-color="#f0f7ff" style="background: rgb(240, 247, 255);">
+    <td class="col-task">
+      <div class="task-name-cell">
+        <button class="expand-btn" id="expand-t1784702703097" onclick="toggleSubtasks('t1784702703097')" title="Show/hide subtasks">▶</button>
+        <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784702703097','name',this.textContent)">DC47/DC60 Consolidation</span>
+        
+      </div>
+    </td>
+    <td class="col-status"><select onchange="updateTaskField('t1784702703097','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784702703097" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e3f0ff;color:#0070f3">
+    <option value="Todo">Todo</option><option value="In Progress" selected="">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
+  </select></td>
+    <td class="col-due"><input type="date" value="2026-08-15" onchange="updateTaskField('t1784702703097','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
+    <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784702703097','notes',this.textContent)"></td>
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784702703097','proj-1784123786822')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784702703097" data-hidden="true">
+    <td colspan="7">
+      <button class="btn-add-subtask" onclick="addSubtask('t1784702703097','proj-1784123786822')">+ Add subtask</button>
+    </td></tr></tbody>
     </table>
     <div style="margin-top:8px">
       <button class="filter-btn" style="font-size:12px" onclick="addTaskToProject('proj-1784123786822')">+ Add task to BAU</button>
@@ -664,7 +804,7 @@
       <div class="task-name-cell">
         <button class="expand-btn" id="expand-t1784626626257" onclick="toggleSubtasks('t1784626626257')" title="Show/hide subtasks">▶</button>
         <span class="task-name-text" contenteditable="true" onblur="updateTaskField('t1784626626257','name',this.textContent)">Q2 Aha Card Administration</span>
-        <span class="subtask-count has-open">0/1</span>
+        
       </div>
     </td>
     <td class="col-status"><select onchange="updateTaskField('t1784626626257','status',this.value);updateRowMeta(this);applyStatusColor(this)" data-id="t1784626626257" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#e6f9ee;color:#1a7a3f">
@@ -672,19 +812,7 @@
   </select></td>
     <td class="col-due"><input type="date" value="2026-06-30" onchange="updateTaskField('t1784626626257','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
     <td class="col-notes" contenteditable="true" onblur="updateTaskField('t1784626626257','notes',this.textContent)"></td>
-    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784626626257','proj-1784136566745')">×</button></td></tr><tr class="subtask-row" data-subtask-id="s1784626695960" data-parent-task-id="t1784626626257" data-status="Todo" data-hidden="true" style="background: rgb(255, 248, 240);">
-    <td class="col-task" colspan="1">
-      <div class="subtask-name-cell">
-        <span class="subtask-indent">└</span>
-        <span class="subtask-name-text" contenteditable="true" onblur="updateSubtaskField('s1784626695960','t1784626626257','name',this.textContent)">New subtask</span>
-      </div>
-    </td>
-    <td class="col-status"><select onchange="updateSubtaskField('s1784626695960','t1784626626257','status',this.value);applyStatusColor(this)" data-id="s1784626695960" style="border:none;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:600;cursor:pointer;width:100%;background:#f3f4f6;color:#4b5563">
-    <option value="Todo" selected="">Todo</option><option value="In Progress">In Progress</option><option value="Review">Review</option><option value="Blocked">Blocked</option><option value="Done">Done</option>
-  </select></td>
-    <td class="col-due"><input type="date" value="" onchange="updateSubtaskField('s1784626695960','t1784626626257','due',this.value)" style="border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:12px;width:100%"></td>
-    <td class="col-notes" contenteditable="true" onblur="updateSubtaskField('s1784626695960','t1784626626257','notes',this.textContent)"></td>
-    <td class="col-actions"><button class="btn-delete" onclick="deleteSubtask('s1784626695960','t1784626626257','proj-1784136566745')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784626626257" data-hidden="true">
+    <td class="col-actions"><button class="btn-delete" onclick="deleteTask('t1784626626257','proj-1784136566745')">×</button></td></tr><tr class="add-subtask-row" data-parent-task-id="t1784626626257" data-hidden="true">
     <td colspan="7">
       <button class="btn-add-subtask" onclick="addSubtask('t1784626626257','proj-1784136566745')">+ Add subtask</button>
     </td></tr><tr class="task-row" data-task-id="t1784626699412" data-status="In Progress" data-proj-id="proj-1784136566745" data-row-color="#f0f7ff" style="background: rgb(240, 247, 255);">
@@ -977,10 +1105,10 @@
   <button class="btn-autosave on" id="btn-autosave" onclick="toggleAutosave()">Autosave: On</button>
   <button class="btn-save" onclick="saveData()">Save</button>
 </div>
-<div class="toast" id="toast">Downloaded — upload to GitHub to publish!</div>
+<div class="toast" id="toast"></div>
 
 <script>
-const DEFAULT_DATA = {"projects":[{"id":"proj-1","name":"One Horizon: HANA Cloud Adoption & Migration","color":"#0070f3","tasks":[{"id":"t1784123552854","name":"DC68 BizX SD Net New DB Go Live","status":"Done","priority":"Medium","due":"2026-07-17","progress":78,"notes":"","subtasks":[{"id":"s1784135873824","name":"dbPool68SDBPT003,\n  dbPool68SDBPT004 testing","status":"Done","due":"2026-07-15","notes":""},{"id":"s1784135905464","name":"Go Live Change ticket","status":"Done","due":"2026-07-17","notes":""}],"desc":""},{"id":"t1784123739666","name":"DC57 & DC70 BizX SD Net New DB Go Live","status":"In Progress","priority":"Medium","due":"2026-07-31","progress":0,"notes":"","subtasks":[{"id":"s1784623950717","name":"Go Live Change Tickets","status":"In Progress","due":"","notes":""},{"id":"s1784623973477","name":"HC DB Pool Pingdom check setup","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784136108960","name":"DC57 LMS Go Live","status":"In Progress","priority":"Medium","due":"","progress":0,"notes":"","subtasks":[{"id":"s1784136222408","name":"App Stack Build and Setup","status":"Blocked","due":"","notes":"App build blocked due to connection to HANA Cloud db is not working."},{"id":"s1784136237616","name":"Functional Validation","status":"Todo","due":"","notes":""},{"id":"s1784136246664","name":"Load Test - baseline vs hana cloud pool","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784136125472","name":"DC70 LMS Build","status":"In Progress","priority":"Medium","due":"","progress":0,"notes":"","subtasks":[{"id":"s1784136281745","name":"App Stack Build and Setup","status":"Blocked","due":"","notes":"Capacity Issue"},{"id":"s1784136285657","name":"Functional Validation","status":"Todo","due":"","notes":""},{"id":"s1784136289385","name":"Load Test - baseline vs hana cloud pool","status":"Todo","due":"","notes":""}],"desc":""}],"desc":"Migrate all BizX and LMS tenants from HANA 2 to HANA Cloud Database."},{"id":"proj-2","name":"Ransomware Assessment","color":"#28a745","tasks":[],"desc":"The Ransomware Assessment measures the organization's preparedness to prevent, detect, respond to, contain, recover from, and restore business-critical applications, services, and infrastructure following a ransomware attack."},{"id":"proj-1784123786822","name":"BAU","color":"#0070f3","tasks":[]},{"id":"proj-1784136566745","name":"Governance Aha Card","color":"#0070f3","tasks":[{"id":"t1784626626257","name":"Q2 Aha Card Administration","status":"Done","due":"2026-06-30","notes":"","desc":"","subtasks":[{"id":"s1784626695960","name":"New subtask","status":"Todo","due":"","notes":""}]},{"id":"t1784626699412","name":"Q3 Aha Card Administration","status":"In Progress","due":"2026-09-30","notes":"","desc":"","subtasks":[]},{"id":"t1784626721778","name":"Q4 Aha Card Administration","status":"In Progress","due":"2026-12-31","notes":"","desc":"","subtasks":[]}],"desc":"Create and maintain Aha cards for the Governance team."},{"id":"proj-1784136651304","name":"DB Refresh Automation","color":"#0070f3","tasks":[{"id":"t1784187740097","name":"End to End workflow rollout for all DCs","status":"In Progress","priority":"Medium","due":"2026-07-31","progress":0,"notes":"","subtasks":[{"id":"s1784187763113","name":"Indexing + Overall Post completion job integration with DB Jenkins","status":"In Progress","due":"2026-07-31","notes":""},{"id":"s1784187857825","name":"New SCTask assignment to BizX Ops","status":"In Progress","due":"","notes":"DMIN0009604"},{"id":"s1784625375874","name":"WFA Rebuild Jenkins Job Setup","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784187907312","name":"Recurring Issue discussion with Engg team","status":"In Progress","priority":"Medium","due":"","progress":0,"notes":"","subtasks":[{"id":"s1784547398668","name":"Discussion with BSS Team","status":"Done","due":"2026-07-07","notes":"PLT-89379 -> fix is planned for 2605P15"},{"id":"s1784547413699","name":"Discussion with Platform Team","status":"In Progress","due":"2026-07-21","notes":""},{"id":"s1784547605860","name":"Discussion with SAC Team","status":"Todo","due":"","notes":""}],"desc":""}],"desc":"Implement end-to-end automation for BizX DB Refresh requests, including pre-refresh, database import/export, and post-refresh activities. This will reduce manual effort for the Shared Operations team. In 2025, the team handled 2,191 DB Refresh tickets, making this a high-impact automation opportunity."},{"id":"proj-1784551011049","name":"2H 2026 Major Code Support","color":"#0070f3","tasks":[{"id":"t1784614662169","name":"2H 2026 Release Architectural updates","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614683119","name":"JIRA and Service-Now dashboards","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614739312","name":"Wiki page for executive meeting","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614807951","name":"Ops Status Meeting invite","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614817216","name":"Weekly Report","status":"Todo","due":"","notes":"","desc":"","subtasks":[]}],"desc":"Major code release support"}],"lastUpdated":"Jul 21, 2026"};
+const DEFAULT_DATA = {"projects":[{"id":"proj-1","name":"One Horizon: HANA Cloud Adoption & Migration","color":"#0070f3","tasks":[{"id":"t1784123552854","name":"DC68 BizX SD Net New DB Go Live","status":"Done","priority":"Medium","due":"2026-07-17","progress":78,"notes":"","subtasks":[{"id":"s1784135873824","name":"dbPool68SDBPT003,\n  dbPool68SDBPT004 testing","status":"Done","due":"2026-07-15","notes":""},{"id":"s1784135905464","name":"Go Live Change ticket","status":"Done","due":"2026-07-17","notes":""}],"desc":""},{"id":"t1784123739666","name":"DC57 & DC70 BizX SD Net New DB Go Live","status":"In Progress","priority":"Medium","due":"2026-07-31","progress":0,"notes":"","subtasks":[{"id":"s1784623950717","name":"Go Live Change Tickets","status":"In Progress","due":"","notes":""},{"id":"s1784623973477","name":"HC DB Pool Pingdom check setup","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784136108960","name":"DC57 LMS Go Live","status":"In Progress","priority":"Medium","due":"","progress":0,"notes":"","subtasks":[{"id":"s1784136222408","name":"App Stack Build and Setup","status":"In Progress","due":"","notes":"ps57lp01 build completed."},{"id":"s1784136237616","name":"Functional Validation","status":"Todo","due":"","notes":""},{"id":"s1784136246664","name":"Load Test - baseline vs hana cloud pool","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784136125472","name":"DC70 LMS Go Live","status":"In Progress","priority":"Medium","due":"","progress":0,"notes":"","subtasks":[{"id":"s1784136281745","name":"App Stack Build and Setup","status":"Blocked","due":"","notes":"ps70lp01 build completed. We have capacity issue for other pool build."},{"id":"s1784136285657","name":"Functional Validation","status":"Todo","due":"","notes":""},{"id":"s1784136289385","name":"Load Test - baseline vs hana cloud pool","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784702848457","name":"Extend BizX perf log retention","status":"In Progress","due":"2026-07-31","notes":"","desc":"","subtasks":[]},{"id":"t1784702975251","name":"Splunk Dashboard for BizX HANA Cloud Migration","status":"In Progress","due":"2026-07-31","notes":"","desc":"","subtasks":[]},{"id":"t1784731449082","name":"New task","status":"Todo","due":"","notes":"","desc":"","subtasks":[]}],"desc":"Migrate all BizX and LMS tenants from HANA 2 to HANA Cloud Database."},{"id":"proj-2","name":"Ransomware Assessment","color":"#28a745","tasks":[{"id":"t1784730318275","name":"BISO Document review","status":"In Progress","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784731165305","name":"Wiki Page Update","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784731377313","name":"1 Click Build Discussion","status":"Todo","due":"","notes":"","desc":"","subtasks":[]}],"desc":"The Ransomware Assessment measures the organization's preparedness to prevent, detect, respond to, contain, recover from, and restore business-critical applications, services, and infrastructure following a ransomware attack."},{"id":"proj-1784123786822","name":"BAU","color":"#0070f3","tasks":[{"id":"t1784702590673","name":"Payroll EDR Test Support","status":"Done","due":"2026-07-21","notes":"","desc":"","subtasks":[]},{"id":"t1784702703097","name":"DC47/DC60 Consolidation","status":"In Progress","due":"2026-08-15","notes":"","desc":"","subtasks":[]}]},{"id":"proj-1784136566745","name":"Governance Aha Card","color":"#0070f3","tasks":[{"id":"t1784626626257","name":"Q2 Aha Card Administration","status":"Done","due":"2026-06-30","notes":"","desc":"","subtasks":[]},{"id":"t1784626699412","name":"Q3 Aha Card Administration","status":"In Progress","due":"2026-09-30","notes":"","desc":"","subtasks":[]},{"id":"t1784626721778","name":"Q4 Aha Card Administration","status":"In Progress","due":"2026-12-31","notes":"","desc":"","subtasks":[]}],"desc":"Create and maintain Aha cards for the Governance team."},{"id":"proj-1784136651304","name":"DB Refresh Automation","color":"#0070f3","tasks":[{"id":"t1784187740097","name":"End to End workflow rollout for all DCs","status":"In Progress","priority":"Medium","due":"2026-07-31","progress":0,"notes":"","subtasks":[{"id":"s1784187763113","name":"Indexing + Overall Post completion job integration with DB Jenkins","status":"In Progress","due":"2026-07-31","notes":""},{"id":"s1784187857825","name":"New SCTask assignment to BizX Ops","status":"In Progress","due":"","notes":"DMIN0009604"},{"id":"s1784625375874","name":"WFA Rebuild Jenkins Job Setup","status":"In Progress","due":"","notes":""}],"desc":""},{"id":"t1784187907312","name":"Recurring Issue discussion with Engg team","status":"In Progress","priority":"Medium","due":"","progress":0,"notes":"","subtasks":[{"id":"s1784547398668","name":"Discussion with BSS Team","status":"Done","due":"2026-07-07","notes":"PLT-89379 -> fix is planned for 2605P15"},{"id":"s1784547413699","name":"Discussion with Platform Team","status":"In Progress","due":"2026-07-21","notes":""},{"id":"s1784547605860","name":"Discussion with SAC Team","status":"Todo","due":"","notes":""}],"desc":""}],"desc":"Implement end-to-end automation for BizX DB Refresh requests, including pre-refresh, database import/export, and post-refresh activities. This will reduce manual effort for the Shared Operations team. In 2025, the team handled 2,191 DB Refresh tickets, making this a high-impact automation opportunity."},{"id":"proj-1784551011049","name":"2H 2026 Major Code Support","color":"#0070f3","tasks":[{"id":"t1784614662169","name":"2H 2026 Release Architectural updates","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614683119","name":"JIRA and Service-Now dashboards","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614739312","name":"Wiki page for executive meeting","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614807951","name":"Ops Status Meeting invite","status":"Todo","due":"","notes":"","desc":"","subtasks":[]},{"id":"t1784614817216","name":"Weekly Report","status":"Todo","due":"","notes":"","desc":"","subtasks":[]}],"desc":"Major code release support"}],"lastUpdated":"Jul 22, 2026"};
 
 let data = null;
 let activeFilter = "all";
@@ -1447,27 +1575,48 @@ function filterTasks() {
 
 // ─── Stats ─────────────────────────────────────────────────────────────────────
 function updateStats() {
-  let total = 0, inprog = 0, done = 0, blocked = 0;
-  let subTotal = 0, subDone = 0, subBlocked = 0;
-  data.projects.forEach(proj => proj.tasks.forEach(t => {
-    total++;
-    if (t.status === "In Progress") inprog++;
-    if (t.status === "Done") done++;
-    if (t.status === "Blocked") blocked++;
-    t.subtasks.forEach(s => {
-      subTotal++;
-      if (s.status === "Done") subDone++;
-      if (s.status === "Blocked") subBlocked++;
+  let total = 0, inprog = 0, done = 0, blocked = 0, todo = 0;
+  let subTotal = 0, subInprog = 0, subDone = 0, subBlocked = 0, subTodo = 0;
+  const activeProjects = new Set();
+
+  data.projects.forEach(proj => {
+    proj.tasks.forEach(t => {
+      total++;
+      if (t.status === "In Progress") { inprog++; activeProjects.add(proj.id); }
+      else if (t.status === "Done")    done++;
+      else if (t.status === "Blocked") { blocked++; activeProjects.add(proj.id); }
+      else if (t.status === "Todo")    { todo++; activeProjects.add(proj.id); }
+      else activeProjects.add(proj.id);
+
+      t.subtasks.forEach(s => {
+        subTotal++;
+        if (s.status === "In Progress") subInprog++;
+        else if (s.status === "Done")    subDone++;
+        else if (s.status === "Blocked") subBlocked++;
+        else if (s.status === "Todo")    subTodo++;
+      });
     });
-  }));
-  document.getElementById("stat-total").textContent = total;
-  document.getElementById("stat-inprogress").textContent = inprog;
-  document.getElementById("stat-done").textContent = done;
-  document.getElementById("stat-blocked").textContent = blocked;
-  document.getElementById("stat-sub-total").textContent = subTotal;
-  document.getElementById("stat-sub-done").textContent = subDone;
-  document.getElementById("stat-sub-open").textContent = subTotal - subDone;
-  document.getElementById("stat-sub-blocked").textContent = subBlocked;
+  });
+
+  let completedProjects = 0;
+  data.projects.forEach(proj => {
+    if (proj.tasks.length > 0 && proj.tasks.every(t => t.status === "Done"))
+      completedProjects++;
+  });
+
+  document.getElementById("stat-projects").textContent         = data.projects.length;
+  document.getElementById("stat-projects-active").textContent  = activeProjects.size;
+  document.getElementById("stat-projects-done").textContent    = completedProjects;
+  document.getElementById("stat-total").textContent         = total;
+  document.getElementById("stat-sub-total").textContent     = subTotal;
+  document.getElementById("stat-inprogress").textContent    = inprog;
+  document.getElementById("stat-sub-inprog").textContent    = subInprog;
+  document.getElementById("stat-done").textContent          = done;
+  document.getElementById("stat-sub-done").textContent      = subDone;
+  document.getElementById("stat-blocked").textContent       = blocked;
+  document.getElementById("stat-sub-blocked").textContent   = subBlocked;
+  document.getElementById("stat-todo").textContent          = todo;
+  document.getElementById("stat-sub-todo").textContent      = subTodo;
 }
 
 // ─── Save / export ─────────────────────────────────────────────────────────────
